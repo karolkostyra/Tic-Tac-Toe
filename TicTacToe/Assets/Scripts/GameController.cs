@@ -19,6 +19,8 @@ public class GameController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI TMP_Player_1;
     [SerializeField] private TextMeshProUGUI TMP_Player_2;
 
+    public int[] markedSpaces; //ID's which space in grid was marked by which player
+
 
     void Start()
     {
@@ -32,6 +34,7 @@ public class GameController : MonoBehaviour
 
     void GameSetup()
     {
+        whoseTurn = 0;
         turnCount = 0;
         matchCount = 0;
         whichIcon = Random.Range(0, 2); //pick randomly icon for first player
@@ -43,8 +46,10 @@ public class GameController : MonoBehaviour
         turnIcons[1].SetActive(false);
         TMP_whoseStart.text = "Player 1's starts game!";
 
-        if (matchCount != 0)
-            ResetGrid();
+        //ResetGrid();
+
+        //if (matchCount != 0)
+          //  ResetGrid();
     }
 
     public void GridButtonIcon(int number)
@@ -52,7 +57,7 @@ public class GameController : MonoBehaviour
         gridSpaces[number].image.sprite = Icons[whichIcon];
         gridSpaces[number].interactable = false;
 
-        whichIcon = (whichIcon + 1) % 2;
+        whichIcon = (whichIcon + 1) % 2; // TO CHANGE!
 
         if(whoseTurn == 0)
         {
@@ -82,12 +87,19 @@ public class GameController : MonoBehaviour
         }
     }
 
-    void ResetGrid()
+    public void ResetGrid() //works but not reset which player starts match (only reset grid)
     {
-        for(int i = 0; i < gridSpaces.Length; i++)
+        GameSetup();
+
+        for (int i = 0; i < gridSpaces.Length; i++)
         {
             gridSpaces[i].interactable = true;
             gridSpaces[i].GetComponent<Image>().sprite = null;
+        }
+
+        for (int i = 0; i < markedSpaces.Length; i++)
+        {
+            markedSpaces[i] = -1;
         }
     }
 }
