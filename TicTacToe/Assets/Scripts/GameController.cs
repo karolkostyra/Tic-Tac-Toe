@@ -19,12 +19,13 @@ public class GameController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI TMP_Player_1;
     [SerializeField] private TextMeshProUGUI TMP_Player_2;
 
-    public int[] markedSpaces; //ID's which space in grid was marked by which player
+    private int[] markedSpaces; //ID's which space in grid was marked by which player
 
 
     void Start()
     {
-        GameSetup();
+        markedSpaces = new int[9];
+        ResetGrid();
     }
     
     void Update()
@@ -56,10 +57,12 @@ public class GameController : MonoBehaviour
     {
         gridSpaces[number].image.sprite = Icons[whichIcon];
         gridSpaces[number].interactable = false;
+        markedSpaces[number] = whoseTurn;
 
         whichIcon = (whichIcon + 1) % 2; // TO CHANGE!
+        turnCount++;
 
-        if(whoseTurn == 0)
+        if (whoseTurn == 0)
         {
             whoseTurn = 1;
             turnIcons[0].SetActive(false);
