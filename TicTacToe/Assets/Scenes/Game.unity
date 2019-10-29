@@ -745,7 +745,7 @@ GameObject:
   - component: {fileID: 555852858}
   - component: {fileID: 555852857}
   m_Layer: 5
-  m_Name: WhoseTurn_TMP
+  m_Name: TMP_showText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1288,7 +1288,7 @@ MonoBehaviour:
   - {fileID: 963300878}
   - {fileID: 1855528993}
   - {fileID: 11742388}
-  TMP_whoseStart: {fileID: 555852857}
+  TMP_showText: {fileID: 555852857}
   TMP_Player_1: {fileID: 1143753327}
   TMP_Player_2: {fileID: 2054592136}
 --- !u!4 &636826980
