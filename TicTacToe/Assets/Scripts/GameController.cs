@@ -14,6 +14,7 @@ public class GameController : MonoBehaviour
     private int markValue; // -1 for P1 and 1 for P2
 
     [SerializeField] private GameObject[] turnIcons; //displays whose turn it is
+    [SerializeField] private GameObject[] winningLines;
     [SerializeField] private Sprite[] Icons; //0 = red 'X', 1 = blue 'O'
     [SerializeField] private Button[] gridSpaces; //playable spaces in 3x3 grid
     [SerializeField] private TextMeshProUGUI TMP_showText; //displays text about which player start the game
@@ -51,7 +52,12 @@ public class GameController : MonoBehaviour
         whichIcon = (whichIcon + 1) % 2; // TO CHANGE!
         turnCount++;
 
-        if(turnCount > 4)
+        if (turnCount > 0)
+        {
+            TMP_showText.text = "";
+        }
+
+        if (turnCount > 4)
         {
             CheckForWinner();
         }
@@ -91,11 +97,23 @@ public class GameController : MonoBehaviour
             if (winConditions[i] == -3) 
             {
                 TMP_showText.text = "Player 1 wins!";
+                DisplayWinningLine(i);
             }
             if (winConditions[i] == 3)
             {
                 TMP_showText.text = "Player 2 wins!";
+                DisplayWinningLine(i);
             }
+        }
+    }
+
+    private void DisplayWinningLine(int index)
+    {
+        winningLines[index].SetActive(true);
+
+        for (int i = 0; i < gridSpaces.Length; i++)
+        {
+            gridSpaces[i].interactable = false;
         }
     }
 
@@ -112,6 +130,11 @@ public class GameController : MonoBehaviour
         for (int i = 0; i < markedSpaces.Length; i++)
         {
             markedSpaces[i] = 0;
+        }
+
+        for(int i = 0; i < winningLines.Length; i++)
+        {
+            winningLines[i].SetActive(false);
         }
     }
 
