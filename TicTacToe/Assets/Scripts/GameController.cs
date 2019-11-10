@@ -6,15 +6,16 @@ using TMPro;
 
 public class GameController : MonoBehaviour
 {
-    public delegate void UpdateScore(int P1_score, int P2_score);
+    public delegate void UpdateScore(int whoScores);
     public static event UpdateScore OnUpdateScore;
 
     private int turnCount; //counts the number of turn played
-    private int matchCount; //counts the number of match played
     private int whoseTurn; //0 = P1 turn, 1 = P2 turn
+    private int whoStartMatch; //index of player which started a match
+    private int startingIcon; //index of icon which was first in match
     private int whichIcon; // 0 = red 'X', 1 = blue 'O'
     private int[] markedSpaces; //ID's which space in grid was marked by which player
-    private int markValue; // -1 for P1 and 1 for P2
+    private int markValue; // -1 for X and 1 for O
 
     [SerializeField] private GameObject[] turnIcons; //displays whose turn it is
     [SerializeField] private GameObject[] winningLines;
@@ -28,21 +29,18 @@ public class GameController : MonoBehaviour
     private void Start()
     {
         markedSpaces = new int[9];
+        whoStartMatch = 1;
+        whoseTurn = turnCount = 0;
         ResetGrid();
     }
-    
+
     private void GameSetup()
     {
         markValue = -1;
-        whoseTurn = turnCount = matchCount = 0;
-        whichIcon = Random.Range(0, 2); //pick randomly icon for first player
-        //whoseTurn = whichIcon; //P1 always start the game (with random icon)
-
-        SetPlayersColor(whichIcon);
-
-        turnIcons[0].SetActive(true);
-        turnIcons[1].SetActive(false);
-        TMP_showText.text = "Player 1's starts game!";
+        SetPlayersColor(whoseTurn);
+        SetTurnIcons(whoStartMatch);
+        whoStartMatch = (whoStartMatch+1)% 2;
+        TMP_showText.text = "Red player starts a match!";
     }
 
     public void GridButtonIcon(int number)
@@ -93,21 +91,16 @@ public class GameController : MonoBehaviour
 
         int[] winConditions = new int[] { row_1, row_2, row_3, col_1, col_2, col_3, diag_1, diag_2 };
 
-        //-1 marks for P1 so 3 in row/colum or diagonally == -3
-        //1 marks for P2 so 3 in row/colum or diagonally == 3
+        //-1 marks for X so 3 in row/colum or diagonally == -3
+        //1 marks for O so 3 in row/colum or diagonally == 3
         for (int i = 0; i < winConditions.Length; i++)
         {
-            if (winConditions[i] == -3) 
+            if (winConditions[i] == -3 || winConditions[i] == 3)
             {
-                TMP_showText.text = "Player 1 wins!";
+                TMP_showText.text = "Player " + whoStartMatch+1 + " wins!";
                 DisplayWinningLine(i);
-                OnUpdateScore(1, 0);
-            }
-            if (winConditions[i] == 3)
-            {
-                TMP_showText.text = "Player 2 wins!";
-                DisplayWinningLine(i);
-                OnUpdateScore(0, 1);
+                OnUpdateScore(whoStartMatch);
+                SwitchIcons();
             }
         }
     }
@@ -140,6 +133,27 @@ public class GameController : MonoBehaviour
         for(int i = 0; i < winningLines.Length; i++)
         {
             winningLines[i].SetActive(false);
+        }
+    }
+
+    private void SwitchIcons()
+    {
+        whichIcon = (whichIcon + 1) % 2;
+    }
+
+    private void SetTurnIcons(int lastTurnPlayerIndex)
+    {
+        if (lastTurnPlayerIndex == 0)
+        {
+            whoseTurn = 1;
+            turnIcons[0].SetActive(false);
+            turnIcons[1].SetActive(true);
+        }
+        if (lastTurnPlayerIndex == 1)
+        {
+            whoseTurn = 0;
+            turnIcons[0].SetActive(true);
+            turnIcons[1].SetActive(false);
         }
     }
 

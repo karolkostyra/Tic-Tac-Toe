@@ -22,6 +22,7 @@ public class Scores : MonoBehaviour
         P1_value = P2_value = 0;
     }
 
+    /*
     private void AddPoint(int P1_score, int P2_score)
     {
         P1_value += P1_score;
@@ -33,6 +34,20 @@ public class Scores : MonoBehaviour
         }
         if (P2_score == 1)
         {
+            TMP_player_2.text = P2_value.ToString();
+        }
+    }
+    */
+    private void AddPoint(int whoScores)
+    {
+        if (whoScores == 0)
+        {
+            P1_value++;
+            TMP_player_1.text = P1_value.ToString();
+        }
+        if (whoScores == 1)
+        {
+            P2_value++;
             TMP_player_2.text = P2_value.ToString();
         }
     }
