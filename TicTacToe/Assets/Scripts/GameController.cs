@@ -6,6 +6,9 @@ using TMPro;
 
 public class GameController : MonoBehaviour
 {
+    public delegate void UpdateScore(int P1_score, int P2_score);
+    public static event UpdateScore OnUpdateScore;
+
     private int turnCount; //counts the number of turn played
     private int matchCount; //counts the number of match played
     private int whoseTurn; //0 = P1 turn, 1 = P2 turn
@@ -98,11 +101,13 @@ public class GameController : MonoBehaviour
             {
                 TMP_showText.text = "Player 1 wins!";
                 DisplayWinningLine(i);
+                OnUpdateScore(1, 0);
             }
             if (winConditions[i] == 3)
             {
                 TMP_showText.text = "Player 2 wins!";
                 DisplayWinningLine(i);
+                OnUpdateScore(0, 1);
             }
         }
     }
