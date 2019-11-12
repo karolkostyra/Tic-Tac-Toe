@@ -97,12 +97,17 @@ public class GameController : MonoBehaviour
         {
             if (winConditions[i] == -3 || winConditions[i] == 3)
             {
-                TMP_showText.text = "Player " + whoStartMatch+1 + " wins!";
+                TMP_showText.text = "Player " + (whoStartMatch+1) + " wins!";
                 DisplayWinningLine(i);
                 OnUpdateScore(whoStartMatch);
                 SwitchIcons();
             }
         }
+    }
+
+    private void Draw()
+    {
+        TMP_showText.text = "DRAW!";
     }
 
     private void DisplayWinningLine(int index)
