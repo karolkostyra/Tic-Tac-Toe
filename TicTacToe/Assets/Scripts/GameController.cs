@@ -11,7 +11,6 @@ public class GameController : MonoBehaviour
 
     private int turnCount; //counts the number of turn played
     private int whoseTurn; //0 = P1 turn, 1 = P2 turn
-    private int whoStartMatch; //index of player which started a match
     private int startingIcon; //index of icon which was first in match
     private int whichIcon; // 0 = red 'X', 1 = blue 'O'
     private int[] markedSpaces; //ID's which space in grid was marked by which player
@@ -29,7 +28,6 @@ public class GameController : MonoBehaviour
     private void Start()
     {
         markedSpaces = new int[9];
-        whoStartMatch = 1;
         whoseTurn = turnCount = 0;
         ResetGrid();
     }
@@ -37,9 +35,9 @@ public class GameController : MonoBehaviour
     private void GameSetup()
     {
         markValue = -1;
+        whichIcon = 0;
         SetPlayersColor(whoseTurn);
-        SetTurnIcons(whoStartMatch);
-        whoStartMatch = (whoStartMatch+1)% 2;
+        SetTurnIcons(whoseTurn);
         TMP_showText.text = "Red player starts a match!";
     }
 
@@ -66,15 +64,14 @@ public class GameController : MonoBehaviour
         if (whoseTurn == 0)
         {
             whoseTurn = 1;
-            turnIcons[0].SetActive(false);
-            turnIcons[1].SetActive(true);
         }
         else
         {
             whoseTurn = 0;
-            turnIcons[0].SetActive(true);
-            turnIcons[1].SetActive(false);
         }
+
+        //zmienic WinnerCheck na bool i jesli zwroci true to NIE wywolywac SetTurnIcons
+        SetTurnIcons(whoseTurn);
     }
 
     private void CheckForWinner()
@@ -97,10 +94,10 @@ public class GameController : MonoBehaviour
         {
             if (winConditions[i] == -3 || winConditions[i] == 3)
             {
-                TMP_showText.text = "Player " + (whoStartMatch+1) + " wins!";
                 DisplayWinningLine(i);
-                OnUpdateScore(whoStartMatch);
+                OnUpdateScore(whoseTurn);
                 SwitchIcons();
+                //SetTurnIcons(whoseTurn+1);
             }
         }
     }
@@ -113,6 +110,8 @@ public class GameController : MonoBehaviour
     private void DisplayWinningLine(int index)
     {
         winningLines[index].SetActive(true);
+
+        TMP_showText.text = "Player " + (whoseTurn + 1) + " wins!";
 
         for (int i = 0; i < gridSpaces.Length; i++)
         {
@@ -150,15 +149,13 @@ public class GameController : MonoBehaviour
     {
         if (lastTurnPlayerIndex == 0)
         {
-            whoseTurn = 1;
-            turnIcons[0].SetActive(false);
-            turnIcons[1].SetActive(true);
+            turnIcons[0].SetActive(true);
+            turnIcons[1].SetActive(false);
         }
         if (lastTurnPlayerIndex == 1)
         {
-            whoseTurn = 0;
-            turnIcons[0].SetActive(true);
-            turnIcons[1].SetActive(false);
+            turnIcons[0].SetActive(false);
+            turnIcons[1].SetActive(true);
         }
     }
 
