@@ -9,18 +9,17 @@ public class GameController : MonoBehaviour
     public delegate void UpdateScore(int whoScores);
     public static event UpdateScore OnUpdateScore;
 
-    private int turnCount; //counts the number of turn played
+    private int turnCount;
     private int whoseTurn; //0 = P1 turn, 1 = P2 turn
-    private int startingIcon; //index of icon which was first in match
-    private int whichIcon; // 0 = red 'X', 1 = blue 'O'
+    private int whichIcon;
     private int[] markedSpaces; //ID's which space in grid was marked by which player
     private int markValue; // -1 for X and 1 for O
 
     [SerializeField] private GameObject[] turnIcons; //displays whose turn it is
     [SerializeField] private GameObject[] winningLines;
-    [SerializeField] private Sprite[] Icons; //0 = red 'X', 1 = blue 'O'
+    [SerializeField] private Sprite[] Icons;
     [SerializeField] private Button[] gridSpaces; //playable spaces in 3x3 grid
-    [SerializeField] private TextMeshProUGUI TMP_showText; //displays text about which player start the game
+    [SerializeField] private TextMeshProUGUI TMP_showText;
     [SerializeField] private TextMeshProUGUI TMP_Player_1;
     [SerializeField] private TextMeshProUGUI TMP_Player_2;
 
@@ -29,12 +28,13 @@ public class GameController : MonoBehaviour
     {
         markedSpaces = new int[9];
         whoseTurn = turnCount = 0;
+        markValue = -1;
         ResetGrid();
     }
 
     private void GameSetup()
     {
-        markValue = -1;
+        turnCount = 0;
         whichIcon = 0;
         SetPlayersColor(whoseTurn);
         SetTurnIcons(whoseTurn);
@@ -48,7 +48,7 @@ public class GameController : MonoBehaviour
         markedSpaces[number] = markValue;
         markValue = -markValue;
 
-        whichIcon = (whichIcon + 1) % 2; // TO CHANGE!
+        whichIcon = (whichIcon + 1) % 2;
         turnCount++;
 
         if (turnCount > 0)
@@ -58,7 +58,11 @@ public class GameController : MonoBehaviour
 
         if (turnCount > 4)
         {
-            CheckForWinner();
+            bool isWinner = CheckForWinner();
+            if (turnCount == 9 && !isWinner)
+            {
+                Draw();
+            }
         }
 
         if (whoseTurn == 0)
@@ -70,11 +74,10 @@ public class GameController : MonoBehaviour
             whoseTurn = 0;
         }
 
-        //zmienic WinnerCheck na bool i jesli zwroci true to NIE wywolywac SetTurnIcons
         SetTurnIcons(whoseTurn);
     }
 
-    private void CheckForWinner()
+    private bool CheckForWinner()
     {
         //all possible scenarios for win
         int row_1 = markedSpaces[0] + markedSpaces[1] + markedSpaces[2];
@@ -97,9 +100,10 @@ public class GameController : MonoBehaviour
                 DisplayWinningLine(i);
                 OnUpdateScore(whoseTurn);
                 SwitchIcons();
-                //SetTurnIcons(whoseTurn+1);
+                return true;
             }
         }
+        return false;
     }
 
     private void Draw()
@@ -119,7 +123,7 @@ public class GameController : MonoBehaviour
         }
     }
 
-    public void ResetGrid() //works but not reset which player starts match (only reset grid)
+    public void ResetGrid()
     {
         GameSetup();
 
