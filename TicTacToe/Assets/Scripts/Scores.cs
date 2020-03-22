@@ -14,7 +14,7 @@ public class Scores : MonoBehaviour
 
     private void Awake()
     {
-        GameController.OnUpdateScore += AddPoint;
+        //GameController.OnUpdateScore += AddPoint;
     }
 
     private void Start()

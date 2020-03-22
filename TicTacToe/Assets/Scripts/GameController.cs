@@ -6,8 +6,10 @@ using TMPro;
 
 public class GameController : MonoBehaviour
 {
-    public delegate void UpdateScore(int whoScores);
-    public static event UpdateScore OnUpdateScore;
+    //public delegate void UpdateScore(int whoScores);
+    //public static event UpdateScore OnUpdateScore;
+
+    private ScoreController scoreControl;
 
     private int turnCount;
     private int whoseTurn; //0 = P1 turn, 1 = P2 turn
@@ -23,6 +25,10 @@ public class GameController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI TMP_Player_1;
     [SerializeField] private TextMeshProUGUI TMP_Player_2;
 
+    private void Awake()
+    {
+        scoreControl = GameObject.Find("ScoreController").GetComponent<ScoreController>();
+    }
 
     private void Start()
     {
@@ -98,7 +104,8 @@ public class GameController : MonoBehaviour
             if (winConditions[i] == -3 || winConditions[i] == 3)
             {
                 DisplayWinningLine(i);
-                OnUpdateScore(whoseTurn);
+                //OnUpdateScore(whoseTurn);
+                scoreControl.AddPoint(whoseTurn);
                 SwitchIcons();
                 return true;
             }
