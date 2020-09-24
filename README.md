@@ -4,6 +4,8 @@ A clone of Tic-Tac-Toe (Unity 3D 2018.3.6f1, C#)
 
 It is a project to test and check how make a game for android devices with various screen size.
 
+:arrow_forward:[Game presentation video](https://www.youtube.com/watch?v=rb8EOsUCy0A)
+</br>
 :arrow_forward:[My youtube channel](https://www.youtube.com/channel/UCRCIp_j5MIfofgcc05LEoXg)
 
 </br>
@@ -23,7 +25,3 @@ Game | Red player win | Draw
 :-------------------------:|:-------------------------:|:-------------------------:
 <img src=https://user-images.githubusercontent.com/50884054/79267928-38ba0580-7e9a-11ea-9f73-81001793aba5.jpg height="450" width="275"> | <img src=https://user-images.githubusercontent.com/50884054/79268886-ca764280-7e9b-11ea-918b-153ef7281a85.jpg height="450" width="275"> | <img src=https://user-images.githubusercontent.com/50884054/79268916-d3ffaa80-7e9b-11ea-94ed-c2a797584c14.jpg height="450" width="275">
 </br>
-
-
-## Link to video
-[![IMAGE ALT TEXT](https://img.youtube.com/vi/rb8EOsUCy0A/0.jpg)](https://youtu.be/rb8EOsUCy0A "TicTacToe video")
